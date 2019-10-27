@@ -13,14 +13,15 @@
 // vertex info
 typedef struct {
     GLKVector3 positionCoords;
+    GLKVector2 textureCoords;
 }
 SceneVertex;
 
 static const SceneVertex vertices[] =
 {
-    {{-0.5, -0.5, 0.0}},
-    {{ 0.0,  0.5, 0.0}},
-    {{ 0.5, -0.5, 0.0}}
+    {{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}},
+    {{ 0.0f,  0.5f, 0.0f}, {0.5f, 0.0f}},
+    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}}
 };
 
 
@@ -44,14 +45,25 @@ static const SceneVertex vertices[] =
     
     self.baseEffect = [[GLKBaseEffect alloc] init];
     self.baseEffect.useConstantColor = GL_TRUE;
-    self.baseEffect.constantColor = GLKVector4Make(1.0f, 0.0f, 0.0f, 1.0f);
+    self.baseEffect.constantColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
     
-    ((AGLKContext *)view.context).clearColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
+    ((AGLKContext *)view.context).clearColor = GLKVector4Make(0.0f, 0.0f, 0.0f, 1.0f);
     
     self.vertexbuffer = [[AGLKVertexAttribArrayBuffer alloc]
                          initWithAttribStride:sizeof(SceneVertex)
                          numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
                          bytes:vertices usage:GL_STATIC_DRAW];
+    
+    // Setup texture
+    CGImageRef imageRef =
+    [[UIImage imageNamed:@"test.jpg"] CGImage];
+    GLKTextureInfo *textureInfo  = [GLKTextureLoader
+                                    textureWithCGImage:imageRef
+                                    options:nil
+                                    error:NULL];
+    
+    self.baseEffect.texture2d0.name = textureInfo.name;
+    self.baseEffect.texture2d0.target = textureInfo.target;
 }
 
 // AGLKView
@@ -65,6 +77,10 @@ static const SceneVertex vertices[] =
     [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribPosition
                            numberOfCoordinates:3
                                   attribOffset:offsetof(SceneVertex, positionCoords)
+                                  shouldEnable:YES];
+    
+    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribTexCoord0
+                           numberOfCoordinates:2 attribOffset:offsetof(SceneVertex, textureCoords)
                                   shouldEnable:YES];
     
     [self.vertexbuffer drawArrayWithMode:GL_TRIANGLES
