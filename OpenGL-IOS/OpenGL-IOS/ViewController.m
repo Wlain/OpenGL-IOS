@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "AGLKVertexAttribArrayBuffer.h"
+#import "AGLKContext.h"
 
 // vertex info
 typedef struct {
@@ -33,58 +35,41 @@ static const SceneVertex vertices[] =
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    GLKView *view = (GLKView *)self.view;
-    NSAssert([view isKindOfClass:[GLKView class]], @"View Controller's view is not a GLKView");
+    AGLKView *view = (AGLKView *)self.view;
+    NSAssert([view isKindOfClass:[AGLKView class]], @"View Controller's view is not a AGLKView");
     
-    view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    view.context = [[AGLKContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
-    [EAGLContext setCurrentContext:view.context];
+    [AGLKContext setCurrentContext:view.context];
     
     self.baseEffect = [[GLKBaseEffect alloc] init];
     self.baseEffect.useConstantColor = GL_TRUE;
     self.baseEffect.constantColor = GLKVector4Make(1.0f, 0.0f, 0.0f, 1.0f);
     
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    ((AGLKContext *)view.context).clearColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
     
-    // stored in GPU memory
-    glGenBuffers(1,                // STEP 1
-                 &vertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER,  // STEP 2
-                 vertexBufferID);
-    glBufferData(                  // STEP 3
-                 GL_ARRAY_BUFFER,  // Initialize buffer contents
-                 sizeof(vertices), // Number of bytes to copy
-                 vertices,         // Address of bytes to copy
-                 GL_STATIC_DRAW);  // Hint: cache in GPU memory
-
+    self.vertexbuffer = [[AGLKVertexAttribArrayBuffer alloc]
+                         initWithAttribStride:sizeof(SceneVertex)
+                         numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
+                         bytes:vertices usage:GL_STATIC_DRAW];
 }
 
-// glkView
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+// AGLKView
+- (void)glkView:(AGLKView *)view drawInRect:(CGRect)rect
 {
     [self.baseEffect prepareToDraw];
     
     // Clear Frame Buffer (erase previous drawing)
-    glClear(GL_COLOR_BUFFER_BIT);
+    [(AGLKContext *)view.context clear:GL_COLOR_BUFFER_BIT];
     
-    // Enable use of positions from bound vertex buffer
-    glEnableVertexAttribArray(      // STEP 4
-                              GLKVertexAttribPosition);
+    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribPosition
+                           numberOfCoordinates:3
+                                  attribOffset:offsetof(SceneVertex, positionCoords)
+                                  shouldEnable:YES];
     
-    glVertexAttribPointer(          // STEP 5
-                          GLKVertexAttribPosition,
-                          3,                   // three components per vertex
-                          GL_FLOAT,            // data is floating point
-                          GL_FALSE,            // no fixed point scaling
-                          sizeof(SceneVertex), // no gaps in data
-                          NULL);               // NULL tells GPU to start at
-    // beginning of bound buffer
-    
-    // Draw triangles using the first three vertices in the
-    // currently bound vertex buffer
-    glDrawArrays(GL_TRIANGLES,      // STEP 6
-                 0,  // Start with first vertex in currently bound buffer
-                 3); // Use three vertices from currently bound buffer
+    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLES
+                        startVertexIndex:0
+                        numberOfVertices:3];
 }
 
 
@@ -94,18 +79,15 @@ static const SceneVertex vertices[] =
     [super viewDidUnload];
     
     // Make the view's context current
-    GLKView *view = (GLKView *)self.view;
+    AGLKView *view = (AGLKView *)self.view;
     [EAGLContext setCurrentContext:view.context];
     
     // Delete buffers that aren't needed when view is unloaded
-    if (0 != vertexBufferID)
-    {
-        glDeleteBuffers (1, &vertexBufferID); // STEP 7
-        vertexBufferID = 0;
-    }
+    self.vertexbuffer = nil;
+    
 
     // clean up
-    ((GLKView *)self.view).context = nil;
+    ((AGLKView *)self.view).context = nil;
     [EAGLContext setCurrentContext:nil];
 }
 

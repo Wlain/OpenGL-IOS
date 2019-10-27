@@ -5,19 +5,20 @@
 //  Created by william on 2019/10/25.
 //  Copyright © 2019 william. All rights reserved.
 //
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#import "AGLKViewController.h"
 #import <GLKit/GLKit.h>
 
-@interface ViewController : GLKViewController
+@class AGLKVertexAttribArrayBuffer;
+
+
+@interface ViewController : AGLKViewController
 {
-    GLuint vertexBufferID;
+    AGLKVertexAttribArrayBuffer *vertexBuffer;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 
-- (void)viewDidUnload();
+@property (strong, nonatomic) AGLKVertexAttribArrayBuffer *vertexbuffer;
 
 @end
 
