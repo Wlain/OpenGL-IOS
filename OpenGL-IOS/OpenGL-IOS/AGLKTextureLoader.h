@@ -5,7 +5,8 @@
 //  Created by william on 2019/10/27.
 //  Copyright © 2019 william. All rights reserved.
 //
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <GLKit/GLKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,9 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -AGLKTextureLoader
 @interface AGLKTextureLoader : NSObject
 
-+ (AGLKTextureInfo *)textureWithCGImage:(CGImageRef)cgImage
-                                options:(NSDictionary *)options
-                                  error:(NSError **)outError;
++ (AGLKTextureInfo *)textureWithCGImage:(CGImageRef __nullable)cgImage
+                                options:(NSDictionary * __nullable)options
+                                  error:(NSError ** __nullable)outError;
 
 @end
 

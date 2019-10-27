@@ -73,21 +73,6 @@ static const NSInteger kAGLKDefaultFramesPerSecond = 30;
     self.paused = YES;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] ==
-        UIUserInterfaceIdiomPhone)
-    {
-        return (interfaceOrientation !=  UIInterfaceOrientationPortraitUpsideDown);
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
-
 - (void) drawView:(id)sender
 {
     [(AGLKView *)self.view display];

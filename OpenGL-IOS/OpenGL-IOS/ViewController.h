@@ -20,5 +20,7 @@
 
 @property (strong, nonatomic) AGLKVertexAttribArrayBuffer *vertexbuffer;
 
+- (void)viewDidUnload;
+
 @end
 

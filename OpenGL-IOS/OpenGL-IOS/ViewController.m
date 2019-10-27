@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "AGLKVertexAttribArrayBuffer.h"
 #import "AGLKContext.h"
+#import "AGLKTextureLoader.h"
 
 // vertex info
 typedef struct {
@@ -19,9 +20,9 @@ SceneVertex;
 
 static const SceneVertex vertices[] =
 {
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f}},
-    {{ 0.0f,  0.5f, 0.0f}, {0.5f, 0.0f}},
-    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f}}
+    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+    {{ 0.0f,  0.5f, 0.0f}, {0.5f, 1.0f}},
+    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}
 };
 
 
@@ -57,7 +58,8 @@ static const SceneVertex vertices[] =
     // Setup texture
     CGImageRef imageRef =
     [[UIImage imageNamed:@"test.jpg"] CGImage];
-    GLKTextureInfo *textureInfo  = [GLKTextureLoader
+    
+    AGLKTextureInfo *textureInfo  = [AGLKTextureLoader
                                     textureWithCGImage:imageRef
                                     options:nil
                                     error:NULL];

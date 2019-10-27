@@ -113,7 +113,7 @@
 - (void)display;
 {
     [EAGLContext setCurrentContext:self.context];
-    glViewport(0, 0, self.drawableWidth, self.drawableHeight);
+    glViewport(0, 0, (GLsizei)self.drawableWidth, (GLsizei)self.drawableHeight);
     
     [self drawRect:[self bounds]];
     
@@ -145,8 +145,8 @@
         depthRenderBuffer = 0;
     }
     
-    GLint currentDrawableWidth  = self.drawableWidth;
-    GLint currentDrawableHeight = self.drawableHeight;
+    GLint currentDrawableWidth  = (GLint)self.drawableWidth;
+    GLint currentDrawableHeight = (GLint)self.drawableHeight;
     
     if(self.drawableDepthFormat !=
         AGLKViewDrawableDepthFormatNone &&

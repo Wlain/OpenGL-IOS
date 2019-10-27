@@ -47,8 +47,8 @@ static NSData *AGLKDataWithResizedCGImageBytes(CGImageRef cgImage,
     {
         name   = aName;
         target = aTarget;
-        width  = aWidth;
-        height = aHeight;
+        width  = (GLuint)aWidth;
+        height = (GLuint)aHeight;
     }
     return self;
 }
@@ -66,9 +66,9 @@ static NSData *AGLKDataWithResizedCGImageBytes(CGImageRef cgImage,
 
 @implementation AGLKTextureLoader
 
-+ (AGLKTextureInfo *)textureWithCGImage:(CGImageRef)cgImage
-                                options:(NSDictionary *)options
-                                  error:(NSError **)outError
++ (AGLKTextureInfo *)textureWithCGImage:(CGImageRef __nullable)cgImage
+                                options:(NSDictionary * __nullable)options
+                                  error:(NSError ** __nullable)outError
 {
     size_t width;
     size_t height;
@@ -82,8 +82,8 @@ static NSData *AGLKDataWithResizedCGImageBytes(CGImageRef cgImage,
     glTexImage2D(GL_TEXTURE_2D,
                  0,
                  GL_RGBA,
-                 width,
-                 height,
+                 (GLuint)width,
+                 (GLuint)height,
                  0,
                  GL_RGBA,
                  GL_UNSIGNED_BYTE,
@@ -112,8 +112,8 @@ static NSData *AGLKDataWithResizedCGImageBytes(CGImageRef cgImage,
     NSCAssert(0 < originalWidth, @"Invalid image width");
     NSCAssert(0 < originalHeight, @"Invalid image height");
     
-    size_t width  = AGLKCalculatePowerOf2ForDimension(originalWidth);
-    size_t height = AGLKCalculatePowerOf2ForDimension(originalHeight);
+    size_t width  = AGLKCalculatePowerOf2ForDimension((GLuint)originalWidth);
+    size_t height = AGLKCalculatePowerOf2ForDimension((GLuint)originalHeight);
     
     NSMutableData *imageData = [NSMutableData dataWithLength:width * height * 4];
     

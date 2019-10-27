@@ -76,7 +76,7 @@
     {
         glEnableVertexAttribArray(index);
     }
-    glVertexAttribPointer(index, count, GL_FLOAT, GL_FALSE, self.stride, NULL + offset);
+    glVertexAttribPointer(index, count, GL_FLOAT, GL_FALSE, (GLint)self.stride, NULL + offset);
     
 #ifdef DEBUG
     { // Report any errors
