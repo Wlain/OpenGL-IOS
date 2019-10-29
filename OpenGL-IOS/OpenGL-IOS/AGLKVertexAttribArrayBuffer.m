@@ -37,9 +37,14 @@
     if (nil != (self = [super init])) {
         stride = aStride;
         bufferSizeBytes = stride * count;
-        glGenBuffers(1, &name);                     // STEP 1
-        glBindBuffer(GL_ARRAY_BUFFER, self.name);   // STEP 2
-        glBufferData(GL_ARRAY_BUFFER, bufferSizeBytes, dataPtr, usage);
+        glGenBuffers(1,            // STEP 1
+                     &name);
+        glBindBuffer(GL_ARRAY_BUFFER,
+                     self.name);   // STEP 2
+        glBufferData(GL_ARRAY_BUFFER,
+                     bufferSizeBytes,
+                     dataPtr,
+                     usage);
                                                     // STEP 3
         NSAssert(0 != name, @"Failed to generate name");
     }
@@ -58,8 +63,12 @@
     self.stride = aStride;
     self.bufferSizeBytes = aStride * count;
     
-    glBindBuffer(GL_ARRAY_BUFFER, self.name);
-    glBufferData(GL_ARRAY_BUFFER, bufferSizeBytes, dataPtr, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER,
+                 self.name);
+    glBufferData(GL_ARRAY_BUFFER,
+                 bufferSizeBytes,
+                 dataPtr,
+                 GL_DYNAMIC_DRAW);
 }
 
 - (void)prepareToDrawWithAttrib:(GLuint)index
@@ -69,21 +78,29 @@
 {
     NSParameterAssert((0 < count) && (count < 4));
     NSParameterAssert(offset < self.stride);
-    NSAssert(0 != name, @"Invalid name");
+    NSAssert(0 != name,
+             @"Invalid name");
     
-    glBindBuffer(GL_ARRAY_BUFFER, self.name);
+    glBindBuffer(GL_ARRAY_BUFFER,
+                 self.name);
     if (shouldEnable)
     {
         glEnableVertexAttribArray(index);
     }
-    glVertexAttribPointer(index, count, GL_FLOAT, GL_FALSE, (GLint)self.stride, NULL + offset);
+    glVertexAttribPointer(index,
+                          count,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          (GLint)self.stride,
+                          NULL + offset);
     
 #ifdef DEBUG
     { // Report any errors
         GLenum error = glGetError();
         if (GL_NO_ERROR != error)
         {
-            NSLog(@"GL Error 0x%x", error);
+            NSLog(@"GL Error 0x%x",
+                  error);
         }
     }
 #endif
@@ -96,7 +113,9 @@
     NSAssert(self.bufferSizeBytes >= ((first + count) * self.stride),
              @"Attempt to draw more vertex data than availiable");
     
-    glDrawArrays(mode, first, count);
+    glDrawArrays(mode,
+                 first,
+                 count);
 }
 
 + (void)drawPreparedArraysWithMode:(GLenum)mode

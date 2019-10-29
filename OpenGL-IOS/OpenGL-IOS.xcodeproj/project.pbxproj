@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D0132A02367D68000D92296 /* grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D01329F2367D68000D92296 /* grid.png */; };
 		3D021DCA23640A1C003ACB87 /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D021DC923640A1C003ACB87 /* AGLKContext.m */; };
 		3D021DCD23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */; };
 		3D09F29023631C5D00D5540E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D09F28F23631C5D00D5540E /* AppDelegate.m */; };
@@ -24,9 +25,11 @@
 		3D1BFF9A23647D2C00DB04B1 /* AGLKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1BFF9923647D2C00DB04B1 /* AGLKViewController.m */; };
 		3D1BFF9D23647D6900DB04B1 /* AGLKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1BFF9C23647D6900DB04B1 /* AGLKView.m */; };
 		3D52A3852365E5E1008D0F69 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A3842365E5E1008D0F69 /* test.jpg */; };
+		3D52A38B2365EA6A008D0F69 /* AGLKTextureLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D01329F2367D68000D92296 /* grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grid.png; sourceTree = "<group>"; };
 		3D021DC823640A1C003ACB87 /* AGLKContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKContext.h; sourceTree = "<group>"; };
 		3D021DC923640A1C003ACB87 /* AGLKContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKContext.m; sourceTree = "<group>"; };
 		3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
@@ -52,6 +55,8 @@
 		3D1BFF9B23647D6900DB04B1 /* AGLKView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKView.h; sourceTree = "<group>"; };
 		3D1BFF9C23647D6900DB04B1 /* AGLKView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKView.m; sourceTree = "<group>"; };
 		3D52A3842365E5E1008D0F69 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
+		3D52A3892365EA6A008D0F69 /* AGLKTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKTextureLoader.h; sourceTree = "<group>"; };
+		3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKTextureLoader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +103,8 @@
 				3D1BFF9923647D2C00DB04B1 /* AGLKViewController.m */,
 				3D021DC823640A1C003ACB87 /* AGLKContext.h */,
 				3D021DC923640A1C003ACB87 /* AGLKContext.m */,
+				3D52A3892365EA6A008D0F69 /* AGLKTextureLoader.h */,
+				3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */,
 				3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */,
 				3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */,
 				3D09F28E23631C5D00D5540E /* AppDelegate.h */,
@@ -129,6 +136,7 @@
 		3D52A3832365E597008D0F69 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				3D01329F2367D68000D92296 /* grid.png */,
 				3D52A3842365E5E1008D0F69 /* test.jpg */,
 			);
 			name = Resource;
@@ -192,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D52A3852365E5E1008D0F69 /* test.jpg in Resources */,
+				3D0132A02367D68000D92296 /* grid.png in Resources */,
 				3D09F29B23631C5E00D5540E /* LaunchScreen.storyboard in Resources */,
 				3D09F29823631C5E00D5540E /* Assets.xcassets in Resources */,
 				3D09F29623631C5D00D5540E /* Main.storyboard in Resources */,
@@ -210,6 +219,7 @@
 				3D021DCD23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m in Sources */,
 				3D09F29E23631C5E00D5540E /* main.m in Sources */,
 				3D09F29023631C5D00D5540E /* AppDelegate.m in Sources */,
+				3D52A38B2365EA6A008D0F69 /* AGLKTextureLoader.m in Sources */,
 				3D1BFF9A23647D2C00DB04B1 /* AGLKViewController.m in Sources */,
 				3D1BFF9D23647D6900DB04B1 /* AGLKView.m in Sources */,
 			);

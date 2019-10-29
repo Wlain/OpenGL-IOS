@@ -18,25 +18,146 @@ typedef struct {
 }
 SceneVertex;
 
-static const SceneVertex vertices[] =
+static SceneVertex vertices[] =
 {
     {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-    {{ 0.0f,  0.5f, 0.0f}, {0.5f, 1.0f}},
-    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}
+    {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+    {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}},
 };
 
 
-@interface ViewController ()
+static const SceneVertex defaultVertices[] =
+{
+    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+    {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+    {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}},
+};
+
+static GLKVector3 movementVectors[4] = {
+    {-0.02f,  - 0.01f, 0.0f},
+    {-0.02f,  - 0.01f, 0.0f},
+    {-0.02f,  - 0.01f, 0.0f},
+    {-0.02f,  - 0.01f, 0.0f},
+};
+
+@interface GLKEffectPropertyTexture (AGLKAdditions)
+
+- (void)aglkSetParameter:(GLenum)parameterID
+                   value:(GLint)value;
+
+@end
+
+@implementation GLKEffectPropertyTexture (AGLKAdditions)
+
+- (void)aglkSetParameter:(GLenum)parameterID
+                   value:(GLint)value
+{
+    glBindTexture(self.target, self.name);
+    
+    glTexParameteri(self.target,
+                    parameterID,
+                    value);
+}
 
 @end
 
 @implementation ViewController
 
 @synthesize baseEffect;
+@synthesize vertexbuffer;
+@synthesize isUseLinearFilter;
+@synthesize isAnimate;
+@synthesize isRepeatTexture;
+@synthesize sCoordinateOffset;
 
+
+// Update the current OpenGL ES contest texture wrapping mode
+- (void)updateTextureParamters
+{
+    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_S
+                                           value:(self.isRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE)];;
+    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_MAG_FILTER
+                                           value:(self.isUseLinearFilter ? GL_LINEAR : GL_NEAREST)];
+    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_T
+                                           value:(self.isRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE)];;
+    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_MIN_FILTER
+                                           value:(self.isUseLinearFilter ? GL_LINEAR : GL_NEAREST)];
+}
+
+
+// animation
+- (void)updateAnimatedVertexPositions
+{
+    if(isAnimate)
+    {
+        int i;
+        for (i = 0; i < 4; i++) {
+            vertices[i].positionCoords.x += movementVectors[i].x;
+            if (vertices[i].positionCoords.x >= 1.0f ||
+                vertices[i].positionCoords.x <= -1.0f)
+            {
+                movementVectors[i].x = -movementVectors[i].x;
+            }
+            vertices[i].positionCoords.y += movementVectors[i].y;
+            if (vertices[i].positionCoords.y >= 1.0f ||
+                vertices[i].positionCoords.y <= -1.0f)
+            {
+                movementVectors[i].y = -movementVectors[i].y;
+            }
+            vertices[i].positionCoords.z += movementVectors[i].z;
+            if (vertices[i].positionCoords.z >= 1.0f ||
+                vertices[i].positionCoords.z <= -1.0f)
+            {
+                movementVectors[i].z = -movementVectors[i].z;
+            }
+        }
+    }
+    else
+    {
+        int i;
+        for (i = 0; i < 4; i++) {
+            vertices[i].positionCoords.x =
+                defaultVertices[i].positionCoords.x;
+            vertices[i].positionCoords.y =
+                defaultVertices[i].positionCoords.y;
+            vertices[i].positionCoords.z =
+                defaultVertices[i].positionCoords.z;
+        }
+    }
+    
+    {
+        // Adjust the S texture coordinates to slide texture
+        int i;
+        for (i = 0; i < 4; i++) {
+            vertices[i].textureCoords.s =
+                (defaultVertices[i].textureCoords.s + sCoordinateOffset.s);
+        }
+        // Adjust the T texture coordinates to slide texture
+        for (i = 0; i < 4; i++) {
+            vertices[i].textureCoords.t =
+                (defaultVertices[i].textureCoords.t + sCoordinateOffset.t);
+        }
+    }
+}
+
+- (void)update
+{
+    [self updateAnimatedVertexPositions];
+    [self updateTextureParamters];
+    
+    [vertexbuffer reinitWithAttribStride:sizeof(SceneVertex)
+                        numberOfVertices:sizeof(vertices)/sizeof(SceneVertex)
+                                   bytes:vertices];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.preferredFramesPerSecond = 60;
+    self.isAnimate = YES;
+    self.isRepeatTexture = YES;
+        
     AGLKView *view = (AGLKView *)self.view;
     NSAssert([view isKindOfClass:[AGLKView class]], @"View Controller's view is not a AGLKView");
     
@@ -48,8 +169,8 @@ static const SceneVertex vertices[] =
     self.baseEffect.useConstantColor = GL_TRUE;
     self.baseEffect.constantColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
     
-    ((AGLKContext *)view.context).clearColor = GLKVector4Make(0.0f, 0.0f, 0.0f, 1.0f);
-    
+    ((AGLKContext *)view.context).clearColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
+   
     self.vertexbuffer = [[AGLKVertexAttribArrayBuffer alloc]
                          initWithAttribStride:sizeof(SceneVertex)
                          numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
@@ -57,7 +178,7 @@ static const SceneVertex vertices[] =
     
     // Setup texture
     CGImageRef imageRef =
-    [[UIImage imageNamed:@"test.jpg"] CGImage];
+    [[UIImage imageNamed:@"grid.png"] CGImage];
     
     AGLKTextureInfo *textureInfo  = [AGLKTextureLoader
                                     textureWithCGImage:imageRef
@@ -72,7 +193,7 @@ static const SceneVertex vertices[] =
 - (void)glkView:(AGLKView *)view drawInRect:(CGRect)rect
 {
     [self.baseEffect prepareToDraw];
-    
+    [self update];
     // Clear Frame Buffer (erase previous drawing)
     [(AGLKContext *)view.context clear:GL_COLOR_BUFFER_BIT];
     
@@ -85,9 +206,9 @@ static const SceneVertex vertices[] =
                            numberOfCoordinates:2 attribOffset:offsetof(SceneVertex, textureCoords)
                                   shouldEnable:YES];
     
-    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLES
+    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLE_STRIP
                         startVertexIndex:0
-                        numberOfVertices:3];
+                        numberOfVertices:4];
 }
 
 
@@ -107,6 +228,31 @@ static const SceneVertex vertices[] =
     // clean up
     ((AGLKView *)self.view).context = nil;
     [EAGLContext setCurrentContext:nil];
+}
+
+
+- (IBAction)takeSCoordinateOffsetFromT:(UISlider *)sender
+{
+    sCoordinateOffset.t = [sender value];
+    self.labelT.text = [NSString stringWithFormat:@"%d%%", (int)(sender.value * 100)];
+}
+
+- (IBAction)takeSCoordinateOffsetFromS:(UISlider *)sender {
+    sCoordinateOffset.s = [sender value];
+    self.label.text = [NSString stringWithFormat:@"%d%%", (int)(sender.value * 100)];
+}
+
+- (IBAction)takeShouldRepeatTextureForm:(UISwitch *)sender
+{
+    self.isRepeatTexture = [sender isOn];
+}
+
+- (IBAction)takeShouldAnimateForm:(UISwitch *)sender {
+    self.isAnimate = [sender isOn];
+}
+
+- (IBAction)takeShouldUseLinearFilter:(UISwitch *)sender {
+    self.isUseLinearFilter = [sender isOn];
 }
 
 
