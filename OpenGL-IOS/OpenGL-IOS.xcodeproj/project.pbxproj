@@ -26,6 +26,9 @@
 		3D1BFF9D23647D6900DB04B1 /* AGLKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1BFF9C23647D6900DB04B1 /* AGLKView.m */; };
 		3D52A3852365E5E1008D0F69 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A3842365E5E1008D0F69 /* test.jpg */; };
 		3D52A38B2365EA6A008D0F69 /* AGLKTextureLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */; };
+		3DFF8F0F23694B330083DAA5 /* leaves.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F0E23694B330083DAA5 /* leaves.gif */; };
+		3DFF8F1423694E050083DAA5 /* textured.frag in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1323694E050083DAA5 /* textured.frag */; };
+		3DFF8F1623694E130083DAA5 /* textured.vert in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1523694E130083DAA5 /* textured.vert */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +60,9 @@
 		3D52A3842365E5E1008D0F69 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
 		3D52A3892365EA6A008D0F69 /* AGLKTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKTextureLoader.h; sourceTree = "<group>"; };
 		3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKTextureLoader.m; sourceTree = "<group>"; };
+		3DFF8F0E23694B330083DAA5 /* leaves.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = leaves.gif; sourceTree = "<group>"; };
+		3DFF8F1323694E050083DAA5 /* textured.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.frag; sourceTree = "<group>"; };
+		3DFF8F1523694E130083DAA5 /* textured.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.vert; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +102,7 @@
 		3D09F28D23631C5D00D5540E /* OpenGL-IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3DFF8F1223694DC60083DAA5 /* Shaders */,
 				3D52A3832365E597008D0F69 /* Resource */,
 				3D1BFF9B23647D6900DB04B1 /* AGLKView.h */,
 				3D1BFF9C23647D6900DB04B1 /* AGLKView.m */,
@@ -136,10 +143,20 @@
 		3D52A3832365E597008D0F69 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				3DFF8F0E23694B330083DAA5 /* leaves.gif */,
 				3D01329F2367D68000D92296 /* grid.png */,
 				3D52A3842365E5E1008D0F69 /* test.jpg */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		3DFF8F1223694DC60083DAA5 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				3DFF8F1323694E050083DAA5 /* textured.frag */,
+				3DFF8F1523694E130083DAA5 /* textured.vert */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,8 +216,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DFF8F0F23694B330083DAA5 /* leaves.gif in Resources */,
+				3DFF8F1623694E130083DAA5 /* textured.vert in Resources */,
 				3D52A3852365E5E1008D0F69 /* test.jpg in Resources */,
 				3D0132A02367D68000D92296 /* grid.png in Resources */,
+				3DFF8F1423694E050083DAA5 /* textured.frag in Resources */,
 				3D09F29B23631C5E00D5540E /* LaunchScreen.storyboard in Resources */,
 				3D09F29823631C5E00D5540E /* Assets.xcassets in Resources */,
 				3D09F29623631C5D00D5540E /* Main.storyboard in Resources */,

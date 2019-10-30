@@ -11,10 +11,20 @@
 @class AGLKVertexAttribArrayBuffer;
 
 
-@interface ViewController : AGLKViewController
+@interface ViewController : GLKViewController
 {
-    AGLKVertexAttribArrayBuffer *vertexBuffer;
+    GLuint _program;
+    
+    GLKMatrix4 _modelViewPorjectionMatrix;
+    GLKMatrix3 _normatMatrix;
+    GLfloat _rotation;
+    
+    GLuint _vertexArray;
+    GLuint _vertexBuffer;
+    GLuint _texture0ID;
+    GLuint _texture1ID;
 }
+
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 
