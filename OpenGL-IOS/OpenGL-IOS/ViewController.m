@@ -178,15 +178,31 @@ static GLKVector3 movementVectors[4] = {
     
     // Setup texture
     CGImageRef imageRef =
-    [[UIImage imageNamed:@"grid.png"] CGImage];
+    [[UIImage imageNamed:@"test.jpg"] CGImage];
     
     AGLKTextureInfo *textureInfo  = [AGLKTextureLoader
                                     textureWithCGImage:imageRef
-                                    options:nil
+                                    options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithBool:YES],
+                                    GLKTextureLoaderOriginBottomLeft, nil]
                                     error:NULL];
     
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = textureInfo.target;
+    
+    // Setup texture
+    CGImageRef imageRef1 =
+    [[UIImage imageNamed:@"leaves.gif"] CGImage];
+    AGLKTextureInfo *textureInfo1  = [AGLKTextureLoader
+                                    textureWithCGImage:imageRef1
+                                    options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithBool:YES],
+                                    GLKTextureLoaderOriginBottomLeft, nil]
+                                    error:NULL];
+    
+    self.baseEffect.texture2d1.name = textureInfo1.name;
+    self.baseEffect.texture2d1.target = textureInfo1.target;
+    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
 }
 
 // AGLKView
@@ -205,7 +221,12 @@ static GLKVector3 movementVectors[4] = {
     [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribTexCoord0
                            numberOfCoordinates:2 attribOffset:offsetof(SceneVertex, textureCoords)
                                   shouldEnable:YES];
+
     
+    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribTexCoord1
+                           numberOfCoordinates:2 attribOffset:offsetof(SceneVertex, textureCoords)
+                                  shouldEnable:YES];
+    [self.baseEffect prepareToDraw];
     [self.vertexbuffer drawArrayWithMode:GL_TRIANGLE_STRIP
                         startVertexIndex:0
                         numberOfVertices:4];
