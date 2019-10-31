@@ -7,7 +7,6 @@
 //
 
 #import <GLKit/GLKit.h>
-#import "AGLKView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

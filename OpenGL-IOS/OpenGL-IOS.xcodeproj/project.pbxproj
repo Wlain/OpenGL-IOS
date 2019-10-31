@@ -36,6 +36,7 @@
 		3D0954FC236ACDFE00A9F19D /* backend_svg.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954DE236ACDFD00A9F19D /* backend_svg.c */; };
 		3D0954FD236ACDFE00A9F19D /* bitmap_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954DF236ACDFD00A9F19D /* bitmap_io.c */; };
 		3D0954FE236ACDFE00A9F19D /* backend_dxf.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954E0236ACDFD00A9F19D /* backend_dxf.c */; };
+		3D095501236B050600A9F19D /* PotraceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D095500236B050600A9F19D /* PotraceViewController.m */; };
 		3D09F29023631C5D00D5540E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D09F28F23631C5D00D5540E /* AppDelegate.m */; };
 		3D09F29323631C5D00D5540E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D09F29223631C5D00D5540E /* ViewController.m */; };
 		3D09F29623631C5D00D5540E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D09F29423631C5D00D5540E /* Main.storyboard */; };
@@ -48,10 +49,7 @@
 		3D09F2AC23631CA100D5540E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AB23631CA100D5540E /* UIKit.framework */; };
 		3D09F2AE23631CAE00D5540E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AD23631CAD00D5540E /* CoreGraphics.framework */; };
 		3D09F2B023631CB800D5540E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AF23631CB800D5540E /* Foundation.framework */; };
-		3D1BFF9A23647D2C00DB04B1 /* AGLKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1BFF9923647D2C00DB04B1 /* AGLKViewController.m */; };
-		3D1BFF9D23647D6900DB04B1 /* AGLKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1BFF9C23647D6900DB04B1 /* AGLKView.m */; };
 		3D52A3852365E5E1008D0F69 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A3842365E5E1008D0F69 /* test.jpg */; };
-		3D52A38B2365EA6A008D0F69 /* AGLKTextureLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */; };
 		3DFF8F0F23694B330083DAA5 /* leaves.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F0E23694B330083DAA5 /* leaves.gif */; };
 		3DFF8F1423694E050083DAA5 /* textured.frag in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1323694E050083DAA5 /* textured.frag */; };
 		3DFF8F1623694E130083DAA5 /* textured.vert in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1523694E130083DAA5 /* textured.vert */; };
@@ -116,6 +114,8 @@
 		3D0954E2236ACDFE00A9F19D /* curve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curve.h; sourceTree = "<group>"; };
 		3D0954E3236ACDFE00A9F19D /* backend_xfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = backend_xfig.h; sourceTree = "<group>"; };
 		3D0954E4236ACDFE00A9F19D /* trans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trans.h; sourceTree = "<group>"; };
+		3D0954FF236B050600A9F19D /* PotraceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PotraceViewController.h; sourceTree = "<group>"; };
+		3D095500236B050600A9F19D /* PotraceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PotraceViewController.m; sourceTree = "<group>"; };
 		3D09F28B23631C5D00D5540E /* OpenGL-IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenGL-IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D09F28E23631C5D00D5540E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3D09F28F23631C5D00D5540E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -132,13 +132,7 @@
 		3D09F2AB23631CA100D5540E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3D09F2AD23631CAD00D5540E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3D09F2AF23631CB800D5540E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		3D1BFF9823647D2C00DB04B1 /* AGLKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKViewController.h; sourceTree = "<group>"; };
-		3D1BFF9923647D2C00DB04B1 /* AGLKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKViewController.m; sourceTree = "<group>"; };
-		3D1BFF9B23647D6900DB04B1 /* AGLKView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKView.h; sourceTree = "<group>"; };
-		3D1BFF9C23647D6900DB04B1 /* AGLKView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKView.m; sourceTree = "<group>"; };
 		3D52A3842365E5E1008D0F69 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
-		3D52A3892365EA6A008D0F69 /* AGLKTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKTextureLoader.h; sourceTree = "<group>"; };
-		3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKTextureLoader.m; sourceTree = "<group>"; };
 		3DFF8F0E23694B330083DAA5 /* leaves.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = leaves.gif; sourceTree = "<group>"; };
 		3DFF8F1323694E050083DAA5 /* textured.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.frag; sourceTree = "<group>"; };
 		3DFF8F1523694E130083DAA5 /* textured.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.vert; sourceTree = "<group>"; };
@@ -260,14 +254,10 @@
 				3D52A3832365E597008D0F69 /* Resource */,
 				3DFF8F1223694DC60083DAA5 /* Shaders */,
 				3D0954AD236ACDC800A9F19D /* potrace */,
-				3D1BFF9B23647D6900DB04B1 /* AGLKView.h */,
-				3D1BFF9C23647D6900DB04B1 /* AGLKView.m */,
-				3D1BFF9823647D2C00DB04B1 /* AGLKViewController.h */,
-				3D1BFF9923647D2C00DB04B1 /* AGLKViewController.m */,
+				3D0954FF236B050600A9F19D /* PotraceViewController.h */,
+				3D095500236B050600A9F19D /* PotraceViewController.m */,
 				3D021DC823640A1C003ACB87 /* AGLKContext.h */,
 				3D021DC923640A1C003ACB87 /* AGLKContext.m */,
-				3D52A3892365EA6A008D0F69 /* AGLKTextureLoader.h */,
-				3D52A38A2365EA6A008D0F69 /* AGLKTextureLoader.m */,
 				3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */,
 				3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */,
 				3D09F28E23631C5D00D5540E /* AppDelegate.h */,
@@ -413,12 +403,10 @@
 				3D0954F5236ACDFE00A9F19D /* decompose.c in Sources */,
 				3D0954EE236ACDFE00A9F19D /* getopt.c in Sources */,
 				3D09F29023631C5D00D5540E /* AppDelegate.m in Sources */,
-				3D52A38B2365EA6A008D0F69 /* AGLKTextureLoader.m in Sources */,
 				3D0954F3236ACDFE00A9F19D /* backend_pgm.c in Sources */,
+				3D095501236B050600A9F19D /* PotraceViewController.m in Sources */,
 				3D0954E5236ACDFE00A9F19D /* mkbitmap.c in Sources */,
-				3D1BFF9A23647D2C00DB04B1 /* AGLKViewController.m in Sources */,
 				3D0954F2236ACDFE00A9F19D /* greymap.c in Sources */,
-				3D1BFF9D23647D6900DB04B1 /* AGLKView.m in Sources */,
 				3D0954ED236ACDFE00A9F19D /* flate.c in Sources */,
 				3D0954F1236ACDFE00A9F19D /* curve.c in Sources */,
 				3D0954F0236ACDFE00A9F19D /* getopt1.c in Sources */,

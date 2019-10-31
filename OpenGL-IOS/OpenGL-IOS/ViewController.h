@@ -5,8 +5,8 @@
 //  Created by william on 2019/10/25.
 //  Copyright © 2019 william. All rights reserved.
 //
-#import "AGLKViewController.h"
 #import <GLKit/GLKit.h>
+#import "PotraceViewController.h"
 
 @class AGLKVertexAttribArrayBuffer;
 
@@ -25,6 +25,7 @@
     GLuint _texture1ID;
 }
 
+@property (strong, nonatomic) PotraceViewController *potrace;
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 

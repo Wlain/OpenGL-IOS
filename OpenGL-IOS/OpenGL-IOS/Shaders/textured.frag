@@ -23,5 +23,5 @@ void main()
 
     // Mix the two sampled colors using texColor1's alpha
     // component and then multiply by the light color.
-    gl_FragColor = color0 * vColor;
+    gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0) * vColor;
 }

@@ -9,12 +9,13 @@
 #import "ViewController.h"
 #import "AGLKVertexAttribArrayBuffer.h"
 #import "AGLKContext.h"
-#import "AGLKTextureLoader.h"
+
 
 @interface GLKEffectPropertyTexture (AGLKAdditions)
 
 - (void)aglkSetParameter:(GLenum)parameterID
                    value:(GLint)value;
+
 @end
 
 @implementation GLKEffectPropertyTexture (AGLKAdditions)
@@ -41,6 +42,7 @@
 - (BOOL)validateProgram:(GLuint)program;
 
 @end
+
 
 
 @implementation ViewController
@@ -72,12 +74,14 @@ SceneVertex;
 
 static SceneVertex vertices[] =
 {
-    {{-1.0f, -1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 0.0f}},
-    {{-1.0f,  1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
-    {{ 1.0f, -1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
-    {{ 1.0f,  1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 1.0f}},
+    {{-0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 0.0f}},
+    {{-0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
+    {{ 0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
+    
+//    {{-0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
+    {{ 0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 1.0f}},
+//    {{ 0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
 };
-
 
 - (void)update
 {
@@ -107,10 +111,52 @@ static SceneVertex vertices[] =
     _rotation = 3.14;
     
 }
+/* return new un-initialized bitmap. NULL with errno on error */
+static potrace_bitmap_t *bm_new(int w, int h) {
+  potrace_bitmap_t *bm;
+  int dy = (w + BM_WORDBITS - 1) / BM_WORDBITS;
+ 
+  bm = (potrace_bitmap_t *) malloc(sizeof(potrace_bitmap_t));
+  if (!bm) {
+    return NULL;
+  }
+  bm->w = w;
+  bm->h = h;
+  bm->dy = dy;
+  bm->map = (potrace_word *) calloc(h, dy * BM_WORDSIZE);
+  if (!bm->map) {
+    free(bm);
+    return NULL;
+  }
+  return bm;
+}
+ 
+/* free a bitmap */
+static void bm_free(potrace_bitmap_t *bm) {
+  if (bm != NULL) {
+    free(bm->map);
+  }
+  free(bm);
+}
+ 
+
+-(PotraceViewController *)potrace
+{
+    if (!_potrace) {
+        _potrace = [[PotraceViewController alloc] init];
+    }
+    return _potrace;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    NSLog(@"cwb");
+    int result = [self.potrace runPotroce];
+    if (result != 0)
+    {
+        NSLog(@"Error to potrace");
+    }
+    fprintf(stderr, "Error allocating bitmap: %s\n", strerror(errno));
     self.view.backgroundColor = [UIColor redColor];
     self.preferredFramesPerSecond = 60;
       
@@ -152,7 +198,7 @@ static SceneVertex vertices[] =
     CGImageRef imageRef0 =
     [[UIImage imageNamed:@"test.jpg"] CGImage];
     
-    AGLKTextureInfo *textureInfo0  = [AGLKTextureLoader
+    GLKTextureInfo *textureInfo0  = [GLKTextureLoader
                                     textureWithCGImage:imageRef0
                                     options:[NSDictionary dictionaryWithObjectsAndKeys:
                                     [NSNumber numberWithBool:YES],
@@ -161,6 +207,7 @@ static SceneVertex vertices[] =
     
     self.baseEffect.texture2d0.name = textureInfo0.name;
     self.baseEffect.texture2d0.target = textureInfo0.target;
+    
     [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_S value:GL_REPEAT];
     [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_T value:GL_REPEAT];
     
@@ -201,7 +248,8 @@ static SceneVertex vertices[] =
     glUniformMatrix3fv(uniform[UNIFORM_NORMAL_MATRIX], 1, 0, _normatMatrix.m);
     glUniform1i(uniform[UNIFORM_TEXTURE0_SAMPLER2D], 0);
     glUniform1i(uniform[UNIFORM_TEXTURE1_SAMPLER2D], 1);
-    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLE_STRIP
+    
+    [self.vertexbuffer drawArrayWithMode:GL_LINE_STRIP
                         startVertexIndex:0
                         numberOfVertices:sizeof(vertices)/sizeof(SceneVertex)];
 }

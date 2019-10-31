@@ -9,7 +9,6 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <GLKit/GLKit.h>
-#import "AGLKView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
