@@ -15,7 +15,6 @@
 
 - (void)aglkSetParameter:(GLenum)parameterID
                    value:(GLint)value;
-
 @end
 
 @implementation GLKEffectPropertyTexture (AGLKAdditions)
@@ -48,10 +47,6 @@
 
 @synthesize baseEffect;
 @synthesize vertexbuffer;
-@synthesize isUseLinearFilter;
-@synthesize isAnimate;
-@synthesize isRepeatTexture;
-@synthesize sCoordinateOffset;
 
 // GLSL program uniform indices
 enum
@@ -77,153 +72,29 @@ SceneVertex;
 
 static SceneVertex vertices[] =
 {
-//    {{-0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 0.0f}},
-//    {{-0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
-//    {{ 0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
-//    {{ 0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 1.0f}},
-     {{ 0.5f, -0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {0.0f, 0.0f}},
-     {{ 0.5f,  0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f, 0.0f}},
-     {{ 0.5f, -0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.0f, 1.0f}},
-     {{ 0.5f, -0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.0f, 1.0f}},
-     {{ 0.5f,  0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f, 1.0f}},
-     {{ 0.5f,  0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f, 0.0f}},
-     
-     {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {1.0f, 0.0f}},
-     {{-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f, 0.0f}},
-     {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {1.0f, 1.0f}},
-     {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {1.0f, 1.0f}},
-     {{-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f, 0.0f}},
-     {{-0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f, 1.0f}},
-     
-     {{-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {1.0f, 0.0f}},
-     {{-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.0f, 0.0f}},
-     {{-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {1.0f, 1.0f}},
-     {{-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {1.0f, 1.0f}},
-     {{-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.0f, 0.0f}},
-     {{-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {0.0f, 1.0f}},
-     
-     {{-0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {0.0f, 0.0f}},
-     {{ 0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f, 0.0f}},
-     {{-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {0.0f, 1.0f}},
-     {{-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {0.0f, 1.0f}},
-     {{ 0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f, 0.0f}},
-     {{ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f, 1.0f}},
-     
-     {{ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {1.0f, 1.0f}},
-     {{-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.0f, 1.0f}},
-     {{ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {1.0f, 0.0f}},
-     {{ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {1.0f, 0.0f}},
-     {{-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.0f, 1.0f}},
-     {{-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.0f, 0.0f}},
-     
-     {{ 0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {4.0f, 0.0f}},
-     {{-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f, 0.0f}},
-     {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {4.0f, 4.0f}},
-     {{ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {4.0f, 4.0f}},
-     {{-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f, 0.0f}},
-     {{-0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f, 4.0f}},
+    {{-1.0f, -1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 0.0f}},
+    {{-1.0f,  1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
+    {{ 1.0f, -1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
+    {{ 1.0f,  1.0f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 1.0f}},
 };
 
-
-static const SceneVertex defaultVertices[] =
-{
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-    {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}},
-    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-    {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}},
-};
-
-static GLKVector3 movementVectors[4] = {
-    {-0.02f,  - 0.01f, 0.0f},
-    {-0.02f,  - 0.01f, 0.0f},
-    {-0.02f,  - 0.01f, 0.0f},
-    {-0.02f,  - 0.01f, 0.0f},
-};
-
-
-// Update the current OpenGL ES contest texture wrapping mode
-- (void)updateTextureParamters
-{
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_S
-                                           value:(self.isRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE)];;
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_MAG_FILTER
-                                           value:(self.isUseLinearFilter ? GL_LINEAR : GL_NEAREST)];
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_T
-                                           value:(self.isRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE)];;
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_MIN_FILTER
-                                           value:(self.isUseLinearFilter ? GL_LINEAR : GL_NEAREST)];
-}
-
-
-// animation
-- (void)updateAnimatedVertexPositions
-{
-    if(isAnimate)
-    {
-        int i;
-        for (i = 0; i < 4; i++) {
-            vertices[i].positionCoords.x += movementVectors[i].x;
-            if (vertices[i].positionCoords.x >= 1.0f ||
-                vertices[i].positionCoords.x <= -1.0f)
-            {
-                movementVectors[i].x = -movementVectors[i].x;
-            }
-            vertices[i].positionCoords.y += movementVectors[i].y;
-            if (vertices[i].positionCoords.y >= 1.0f ||
-                vertices[i].positionCoords.y <= -1.0f)
-            {
-                movementVectors[i].y = -movementVectors[i].y;
-            }
-            vertices[i].positionCoords.z += movementVectors[i].z;
-            if (vertices[i].positionCoords.z >= 1.0f ||
-                vertices[i].positionCoords.z <= -1.0f)
-            {
-                movementVectors[i].z = -movementVectors[i].z;
-            }
-        }
-    }
-    else
-    {
-        int i;
-        for (i = 0; i < 4; i++) {
-            vertices[i].positionCoords.x =
-                defaultVertices[i].positionCoords.x;
-            vertices[i].positionCoords.y =
-                defaultVertices[i].positionCoords.y;
-            vertices[i].positionCoords.z =
-                defaultVertices[i].positionCoords.z;
-        }
-    }
-    
-    {
-        // Adjust the S texture coordinates to slide texture
-        int i;
-        for (i = 0; i < 4; i++) {
-            vertices[i].textureCoords.s =
-                (defaultVertices[i].textureCoords.s + sCoordinateOffset.s);
-        }
-        // Adjust the T texture coordinates to slide texture
-        for (i = 0; i < 4; i++) {
-            vertices[i].textureCoords.t =
-                (defaultVertices[i].textureCoords.t + sCoordinateOffset.t);
-        }
-    }
-}
 
 - (void)update
 {
-    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     self.baseEffect.transform.projectionMatrix = projectionMatrix;
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
+    GLKMatrix4 matrix = GLKMatrix4MakeScale(1.0, 1.0, 1.0);
     
+    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
+
     // Computer the model view matrix for the object rendered with GLKit
     GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
     modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-    
+
     self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
-    
+
     //Computer the model view matrix for the object rendered with ES2
     modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
     modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
@@ -231,16 +102,17 @@ static GLKVector3 movementVectors[4] = {
     
     _normatMatrix = GLKMatrix4GetMatrix3(GLKMatrix4InvertAndTranspose(modelViewMatrix, NULL));
     
-    _modelViewPorjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
+    _modelViewPorjectionMatrix = matrix;//GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
 
-    _rotation += self.timeSinceLastUpdate * 0.5f;
+    _rotation = 3.14;
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    NSLog(@"cwb");
+    self.view.backgroundColor = [UIColor redColor];
     self.preferredFramesPerSecond = 60;
-    self.isAnimate = YES;
-    self.isRepeatTexture = YES;
       
     // Verify the type of view created automatically by the
     // Interface Builder storyboard
@@ -262,6 +134,7 @@ static GLKVector3 movementVectors[4] = {
     // all subsequent rendering
     self.baseEffect = [[GLKBaseEffect alloc] init];
     self.baseEffect.useConstantColor = GL_TRUE;
+    
     self.baseEffect.constantColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
     
     glEnable(GL_DEPTH_TEST);
@@ -291,23 +164,7 @@ static GLKVector3 movementVectors[4] = {
     [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_S value:GL_REPEAT];
     [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_T value:GL_REPEAT];
     
-    // Setup texture1
-    CGImageRef imageRef1 =
-    [[UIImage imageNamed:@"leaves.gif"] CGImage];
-    AGLKTextureInfo *textureInfo1  = [AGLKTextureLoader
-                                    textureWithCGImage:imageRef1
-                                    options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSNumber numberWithBool:YES],
-                                    GLKTextureLoaderOriginBottomLeft, nil]
-                                    error:NULL];
-    
-    self.baseEffect.texture2d1.name = textureInfo1.name;
-    self.baseEffect.texture2d1.target = textureInfo1.target;
-    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
-    [self.baseEffect.texture2d1 aglkSetParameter:GL_TEXTURE_WRAP_S value:GL_REPEAT];
-    [self.baseEffect.texture2d1 aglkSetParameter:GL_TEXTURE_WRAP_T value:GL_REPEAT];
 }
-
 
 
 // GLKView
@@ -344,7 +201,7 @@ static GLKVector3 movementVectors[4] = {
     glUniformMatrix3fv(uniform[UNIFORM_NORMAL_MATRIX], 1, 0, _normatMatrix.m);
     glUniform1i(uniform[UNIFORM_TEXTURE0_SAMPLER2D], 0);
     glUniform1i(uniform[UNIFORM_TEXTURE1_SAMPLER2D], 1);
-    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLES
+    [self.vertexbuffer drawArrayWithMode:GL_TRIANGLE_STRIP
                         startVertexIndex:0
                         numberOfVertices:sizeof(vertices)/sizeof(SceneVertex)];
 }
@@ -370,30 +227,6 @@ static GLKVector3 movementVectors[4] = {
     // clean up
     ((GLKView *)self.view).context = nil;
     [EAGLContext setCurrentContext:nil];
-}
-
-- (IBAction)takeSCoordinateOffsetFromT:(UISlider *)sender
-{
-    sCoordinateOffset.t = [sender value];
-    self.labelT.text = [NSString stringWithFormat:@"%d%%", (int)(sender.value * 100)];
-}
-
-- (IBAction)takeSCoordinateOffsetFromS:(UISlider *)sender {
-    sCoordinateOffset.s = [sender value];
-    self.label.text = [NSString stringWithFormat:@"%d%%", (int)(sender.value * 100)];
-}
-
-- (IBAction)takeShouldRepeatTextureForm:(UISwitch *)sender
-{
-    self.isRepeatTexture = [sender isOn];
-}
-
-- (IBAction)takeShouldAnimateForm:(UISwitch *)sender {
-    self.isAnimate = [sender isOn];
-}
-
-- (IBAction)takeShouldUseLinearFilter:(UISwitch *)sender {
-    self.isUseLinearFilter = [sender isOn];
 }
 
 
