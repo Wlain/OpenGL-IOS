@@ -14,7 +14,6 @@
 @interface ViewController : GLKViewController
 {
     GLuint _program;
-    
     GLKMatrix4 _modelViewPorjectionMatrix;
     GLKMatrix3 _normatMatrix;
     GLfloat _rotation;

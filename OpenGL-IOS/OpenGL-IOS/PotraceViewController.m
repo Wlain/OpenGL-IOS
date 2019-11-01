@@ -7,6 +7,7 @@
 //
 
 #import "PotraceViewController.h"
+#import <GLKit/GLKit.h>
 
 /* return new un-initialized bitmap. NULL with errno on error */
 static potrace_bitmap_t *bm_new(int w, int h) {
@@ -37,11 +38,73 @@ static void bm_free(potrace_bitmap_t *bm) {
 }
  
 
+
+
 @implementation PotraceViewController
+
+
+- (unsigned char *)uiimage2Gray:(UIImage *)image
+{
+    size_t width  = image.size.width;
+    size_t height = image.size.height;
+    if (width <= 0 || height <= 0) {
+        return 0;
+    }
+    unsigned char *imageDate = (unsigned char*)malloc(width * height);
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceGray();
+    CGContextRef contexRef = CGBitmapContextCreate(imageDate, width, height, 8, width, colorSpaceRef, kCGImageAlphaNone);
+    
+    CGColorSpaceRelease(colorSpaceRef);
+    UIGraphicsPushContext(contexRef);
+    
+    CGRect rect = CGRectMake(0, 0, width, height);
+    CGContextDrawImage(contexRef, rect, [image CGImage]);
+    UIGraphicsPopContext();
+    CGContextRelease(contexRef);
+    return imageDate;
+}
+
+
+// 返回一个基于c带有图片数据的的bitmap
+- (unsigned char*) uiimage2RGBA:(UIImage *)image
+{
+    size_t width  = image.size.width;
+    size_t height = image.size.height;
+    if(width == 0 || height == 0)
+        return 0;
+    unsigned char* imageData = (unsigned char *) malloc(4 * width * height);
+    
+    CGColorSpaceRef cref = CGColorSpaceCreateDeviceRGB();
+    CGContextRef gc = CGBitmapContextCreate(imageData,
+                                            width,height,
+                                            8,width*4,
+                                            cref,kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRelease(cref);
+    UIGraphicsPushContext(gc);
+    
+    CGRect rect = {{ 0 , 0 }, {(CGFloat)width, (CGFloat)height }};
+    CGContextDrawImage( gc, rect, [image CGImage] );
+    UIGraphicsPopContext();
+    CGContextRelease(gc);
+    return imageData;// CGBitmapContextGetData(gc);
+}
 
 - (int)runPotroce
 {
+    UIImage *image =[UIImage imageNamed:@"9_after.png"];
+    unsigned char *data = [self uiimage2RGBA:image];
+    size_t width  = image.size.width;
+    size_t height = image.size.height;
     int x, y, i;
+    unsigned char *temp = data;
+    unsigned char *redDate = (unsigned char *)malloc(height * width * sizeof(unsigned char));
+    memset(redDate, 0, height * width * sizeof(unsigned char));
+    i = 0;
+    for (y = 0; y < height * width; y++) {
+        redDate[i] = temp[1];
+        temp += 4;
+        i++;
+    }
     potrace_bitmap_t *bm;
     potrace_param_t *param;
     potrace_path_t *p;
@@ -50,19 +113,18 @@ static void bm_free(potrace_bitmap_t *bm) {
     // tag[i]表示第i条线段的类型1. #define POTRACE_CURVETO 1 2.#define POTRACE_CORNER 2
     potrace_dpoint_t (*c)[3];
     /* create a bitmap */
-    bm = bm_new(WIDTH, HEIGHT);
+    bm = bm_new((int)width, (int)height);
     if (!bm) {
       fprintf(stderr, "Error allocating bitmap: %s\n", strerror(errno));
       return 1;
     }
-
     /* fill the bitmap with some pattern */
-    for (y=0; y<HEIGHT; y++) {
-      for (x=0; x<WIDTH; x++) {
-        BM_PUT(bm, x, y, ((x*x + y*y*y) % 10000 < 5000) ? 1 : 0);
+    for (y=0; y<height; y++) {
+      for (x=0; x<width; x++) {
+        BM_PUT(bm, x, y, (redDate[x + y * width] < 128) ? 1 : 0);
       }
     }
-
+    free(redDate);
     /* set tracing parameters, starting from defaults */
     param = potrace_param_default();
     if (!param) {
@@ -81,7 +143,7 @@ static void bm_free(potrace_bitmap_t *bm) {
     
     /* output vector data, e.g. as a rudimentary EPS file */
     printf("%%!PS-Adobe-3.0 EPSF-3.0\n");
-    printf("%%%%BoundingBox: 0 0 %d %d\n", WIDTH, HEIGHT);
+    printf("%%%%BoundingBox: 0 0 %d %d\n", width, height);
     printf("gsave\n");
 
     /* draw each curve */
