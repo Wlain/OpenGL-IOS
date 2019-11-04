@@ -22,6 +22,9 @@
     GLuint _vertexBuffer;
     GLuint _texture0ID;
     GLuint _texture1ID;
+
+    float *_pointData;
+    int    _pointNum;
 }
 
 @property (strong, nonatomic) PotraceViewController *potrace;

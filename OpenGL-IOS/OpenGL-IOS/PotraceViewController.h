@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PotraceViewController : NSObject
 
-- (int) runPotroce;
+- (int)runPotroce:(float *)vertices;
 
 @end
 

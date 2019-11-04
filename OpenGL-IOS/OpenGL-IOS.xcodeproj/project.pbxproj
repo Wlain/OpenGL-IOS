@@ -35,7 +35,7 @@
 		3D0954FC236ACDFE00A9F19D /* backend_svg.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954DE236ACDFD00A9F19D /* backend_svg.c */; };
 		3D0954FD236ACDFE00A9F19D /* bitmap_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954DF236ACDFD00A9F19D /* bitmap_io.c */; };
 		3D0954FE236ACDFE00A9F19D /* backend_dxf.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954E0236ACDFD00A9F19D /* backend_dxf.c */; };
-		3D095501236B050600A9F19D /* PotraceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D095500236B050600A9F19D /* PotraceViewController.m */; };
+		3D095501236B050600A9F19D /* PotraceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D095500236B050600A9F19D /* PotraceViewController.mm */; };
 		3D09550E236B0EEF00A9F19D /* 179_before.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D09550A236B0EEE00A9F19D /* 179_before.png */; };
 		3D09550F236B0EEF00A9F19D /* 9_before.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D09550B236B0EEE00A9F19D /* 9_before.png */; };
 		3D095510236B0EEF00A9F19D /* 9_after.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D09550C236B0EEF00A9F19D /* 9_after.png */; };
@@ -52,8 +52,9 @@
 		3D09F2AC23631CA100D5540E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AB23631CA100D5540E /* UIKit.framework */; };
 		3D09F2AE23631CAE00D5540E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AD23631CAD00D5540E /* CoreGraphics.framework */; };
 		3D09F2B023631CB800D5540E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D09F2AF23631CB800D5540E /* Foundation.framework */; };
+		3D0BD49B2370180F00363977 /* point.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D0BD49A2370180F00363977 /* point.txt */; };
+		3D0BD49F237037AF00363977 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0BD49E237037AF00363977 /* test.png */; };
 		3D52A3852365E5E1008D0F69 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A3842365E5E1008D0F69 /* test.jpg */; };
-		3D7FE89E236BC488003AA939 /* 9_after2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FE89D236BC487003AA939 /* 9_after2.png */; };
 		3DFF8F1423694E050083DAA5 /* textured.frag in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1323694E050083DAA5 /* textured.frag */; };
 		3DFF8F1623694E130083DAA5 /* textured.vert in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF8F1523694E130083DAA5 /* textured.vert */; };
 /* End PBXBuildFile section */
@@ -117,7 +118,7 @@
 		3D0954E3236ACDFE00A9F19D /* backend_xfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = backend_xfig.h; sourceTree = "<group>"; };
 		3D0954E4236ACDFE00A9F19D /* trans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trans.h; sourceTree = "<group>"; };
 		3D0954FF236B050600A9F19D /* PotraceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PotraceViewController.h; sourceTree = "<group>"; };
-		3D095500236B050600A9F19D /* PotraceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PotraceViewController.m; sourceTree = "<group>"; };
+		3D095500236B050600A9F19D /* PotraceViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PotraceViewController.mm; sourceTree = "<group>"; };
 		3D09550A236B0EEE00A9F19D /* 179_before.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 179_before.png; sourceTree = "<group>"; };
 		3D09550B236B0EEE00A9F19D /* 9_before.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_before.png; sourceTree = "<group>"; };
 		3D09550C236B0EEF00A9F19D /* 9_after.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_after.png; sourceTree = "<group>"; };
@@ -138,8 +139,9 @@
 		3D09F2AB23631CA100D5540E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3D09F2AD23631CAD00D5540E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3D09F2AF23631CB800D5540E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3D0BD49A2370180F00363977 /* point.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = point.txt; sourceTree = "<group>"; };
+		3D0BD49E237037AF00363977 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		3D52A3842365E5E1008D0F69 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
-		3D7FE89D236BC487003AA939 /* 9_after2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_after2.png; sourceTree = "<group>"; };
 		3DFF8F1323694E050083DAA5 /* textured.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.frag; sourceTree = "<group>"; };
 		3DFF8F1523694E130083DAA5 /* textured.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textured.vert; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -261,7 +263,7 @@
 				3DFF8F1223694DC60083DAA5 /* Shaders */,
 				3D0954AD236ACDC800A9F19D /* potrace */,
 				3D0954FF236B050600A9F19D /* PotraceViewController.h */,
-				3D095500236B050600A9F19D /* PotraceViewController.m */,
+				3D095500236B050600A9F19D /* PotraceViewController.mm */,
 				3D021DC823640A1C003ACB87 /* AGLKContext.h */,
 				3D021DC923640A1C003ACB87 /* AGLKContext.m */,
 				3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */,
@@ -295,7 +297,7 @@
 		3D52A3832365E597008D0F69 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				3D7FE89D236BC487003AA939 /* 9_after2.png */,
+				3D0BD49E237037AF00363977 /* test.png */,
 				3D09550C236B0EEF00A9F19D /* 9_after.png */,
 				3D09550B236B0EEE00A9F19D /* 9_before.png */,
 				3D09550D236B0EEF00A9F19D /* 179_after.png */,
@@ -308,6 +310,7 @@
 		3DFF8F1223694DC60083DAA5 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				3D0BD49A2370180F00363977 /* point.txt */,
 				3DFF8F1323694E050083DAA5 /* textured.frag */,
 				3DFF8F1523694E130083DAA5 /* textured.vert */,
 			);
@@ -375,11 +378,12 @@
 				3DFF8F1623694E130083DAA5 /* textured.vert in Resources */,
 				3D09550E236B0EEF00A9F19D /* 179_before.png in Resources */,
 				3D52A3852365E5E1008D0F69 /* test.jpg in Resources */,
-				3D7FE89E236BC488003AA939 /* 9_after2.png in Resources */,
 				3DFF8F1423694E050083DAA5 /* textured.frag in Resources */,
 				3D09F29B23631C5E00D5540E /* LaunchScreen.storyboard in Resources */,
 				3D09550F236B0EEF00A9F19D /* 9_before.png in Resources */,
 				3D0954F8236ACDFE00A9F19D /* Makefile.am in Resources */,
+				3D0BD49B2370180F00363977 /* point.txt in Resources */,
+				3D0BD49F237037AF00363977 /* test.png in Resources */,
 				3D09F29823631C5E00D5540E /* Assets.xcassets in Resources */,
 				3D09F29623631C5D00D5540E /* Main.storyboard in Resources */,
 				3D095511236B0EEF00A9F19D /* 179_after.png in Resources */,
@@ -416,7 +420,7 @@
 				3D0954EE236ACDFE00A9F19D /* getopt.c in Sources */,
 				3D09F29023631C5D00D5540E /* AppDelegate.m in Sources */,
 				3D0954F3236ACDFE00A9F19D /* backend_pgm.c in Sources */,
-				3D095501236B050600A9F19D /* PotraceViewController.m in Sources */,
+				3D095501236B050600A9F19D /* PotraceViewController.mm in Sources */,
 				3D0954E5236ACDFE00A9F19D /* mkbitmap.c in Sources */,
 				3D0954F2236ACDFE00A9F19D /* greymap.c in Sources */,
 				3D0954ED236ACDFE00A9F19D /* flate.c in Sources */,

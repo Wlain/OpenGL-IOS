@@ -35,7 +35,8 @@ typedef struct potrace_progress_s potrace_progress_t;
 
 /* structure to hold tracing parameters */
 struct potrace_param_s {
-  int turdsize;        /* area of largest path to be ignored */                                       // 去杂点可以通过去除所有路径内部像素少于t个像素的路径
+  int turdsize;        /* area of largest path to be ignored */
+                       // 去杂点可以通过去除所有路径内部像素少于t个像素的路径
   int turnpolicy;      /* resolves ambiguous turns in path decomposition */
                        // 往左还是往右由一个转向方针决定
   double alphamax;     /* corner threshold */

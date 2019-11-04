@@ -89,9 +89,10 @@ static void bm_free(potrace_bitmap_t *bm) {
     return imageData;// CGBitmapContextGetData(gc);
 }
 
-- (int)runPotroce
+- (int)runPotroce:(float *)vertices
 {
-    UIImage *image =[UIImage imageNamed:@"9_after.png"];
+    int result = 0;
+    UIImage *image =[UIImage imageNamed:@"test.png"];
     unsigned char *data = [self uiimage2RGBA:image];
     size_t width  = image.size.width;
     size_t height = image.size.height;
@@ -121,7 +122,7 @@ static void bm_free(potrace_bitmap_t *bm) {
     /* fill the bitmap with some pattern */
     for (y=0; y<height; y++) {
       for (x=0; x<width; x++) {
-        BM_PUT(bm, x, y, (redDate[x + y * width] < 128) ? 1 : 0);
+        BM_PUT(bm, x, (height - y), (redDate[x + y * width] < 252) ? 1 : 0);
       }
     }
     free(redDate);
@@ -152,18 +153,30 @@ static void bm_free(potrace_bitmap_t *bm) {
       n = p->curve.n;
       tag = p->curve.tag;
       c = p->curve.c;
-      printf("%f %f moveto\n", c[n-1][2].x, c[n-1][2].y);
+      vertices[result++] = c[n-1][2].x/width * 2 - 1.0;
+      vertices[result++] = c[n-1][2].y/height  * 2 - 1.0 - 1.0;
+      printf("%f %f moveto\n", c[n-1][2].x/width * 2 - 1.0, c[n-1][2].y/height  * 2 - 1.0);
       for (i=0; i<n; i++) {
         switch (tag[i]) {
         case POTRACE_CORNER:
-      printf("%f %f lineto\n", c[i][1].x, c[i][1].y);
-      printf("%f %f lineto\n", c[i][2].x, c[i][2].y);
+        vertices[result++] = c[i][1].x/width * 2 - 1.0;
+        vertices[result++] = c[i][1].y/height * 2 - 1.0;
+        vertices[result++] = c[i][2].x/width * 2 - 1.0;
+        vertices[result++] = c[i][2].y/height * 2 - 1.0;
+      printf("%f %f \n", c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0);
+      printf("%f %f \n", c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
       break;
         case POTRACE_CURVETO:
-      printf("%f %f %f %f %f %f curveto\n",
-             c[i][0].x, c[i][0].y,
-             c[i][1].x, c[i][1].y,
-             c[i][2].x, c[i][2].y);
+                vertices[result++] = c[i][0].x/width * 2 - 1.0;
+                vertices[result++] = c[i][0].y/height * 2 - 1.0;
+                vertices[result++] = c[i][1].x/width * 2 - 1.0;
+                vertices[result++] = c[i][1].y/height * 2 - 1.0;
+                vertices[result++] = c[i][2].x/width * 2 - 1.0;
+                vertices[result++] = c[i][2].y/height * 2 - 1.0;
+      printf("%f %f %f %f %f %f \n",
+             c[i][0].x/width * 2 - 1.0, c[i][0].y/height * 2 - 1.0,
+             c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0,
+             c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
       break;
         }
       }
@@ -179,7 +192,7 @@ static void bm_free(potrace_bitmap_t *bm) {
     
     potrace_state_free(st);
     potrace_param_free(param);
-    return 0;
+    return result;
 }
 
 @end

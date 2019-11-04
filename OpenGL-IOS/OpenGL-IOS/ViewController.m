@@ -43,8 +43,6 @@
 
 @end
 
-
-
 @implementation ViewController
 
 @synthesize baseEffect;
@@ -65,23 +63,11 @@ GLint uniform[NUM_NUNIFORMS];
 
 // vertex info
 typedef struct {
-    GLKVector3 positionCoords;
-    GLKVector3 normalCoords;
-    GLKVector2 textureCoords;
+    GLKVector2 positionCoords;
 }
 SceneVertex;
 
-
-static SceneVertex vertices[] =
-{
-    {{-0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 0.0f}},
-    {{-0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
-    {{ 0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
-    
-//    {{-0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {0.0f, 1.0f}},
-    {{ 0.5f,  0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 1.0f}},
-//    {{ 0.5f, -0.5f, 0.0f},{{1.0f, 0.0f, 0.0f}}, {1.0f, 0.0f}},
-};
+float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
 
 - (void)update
 {
@@ -109,36 +95,7 @@ static SceneVertex vertices[] =
     _modelViewPorjectionMatrix = matrix;//GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
 
     _rotation = 3.14;
-    
 }
-/* return new un-initialized bitmap. NULL with errno on error */
-static potrace_bitmap_t *bm_new(int w, int h) {
-  potrace_bitmap_t *bm;
-  int dy = (w + BM_WORDBITS - 1) / BM_WORDBITS;
- 
-  bm = (potrace_bitmap_t *) malloc(sizeof(potrace_bitmap_t));
-  if (!bm) {
-    return NULL;
-  }
-  bm->w = w;
-  bm->h = h;
-  bm->dy = dy;
-  bm->map = (potrace_word *) calloc(h, dy * BM_WORDSIZE);
-  if (!bm->map) {
-    free(bm);
-    return NULL;
-  }
-  return bm;
-}
- 
-/* free a bitmap */
-static void bm_free(potrace_bitmap_t *bm) {
-  if (bm != NULL) {
-    free(bm->map);
-  }
-  free(bm);
-}
- 
 
 -(PotraceViewController *)potrace
 {
@@ -150,9 +107,12 @@ static void bm_free(potrace_bitmap_t *bm) {
 
 
 - (void)viewDidLoad {
+    _pointData = (float *)malloc(sizeof(float) * 1024 * 1024);
+    memset(_pointData, 0, sizeof(float) * 1024 * 1024);
+    _pointNum = 0;
     [super viewDidLoad];
-    int result = [self.potrace runPotroce];
-    if (result != 0)
+    _pointNum = [self.potrace runPotroce:_pointData];
+    if (_pointNum != 0)
     {
         NSLog(@"Error to potrace");
     }
@@ -191,28 +151,10 @@ static void bm_free(potrace_bitmap_t *bm) {
     // Create vertex buffer containing vertices to draw
     self.vertexbuffer = [[AGLKVertexAttribArrayBuffer alloc]
                          initWithAttribStride:sizeof(SceneVertex)
-                         numberOfVertices:sizeof(vertices) / sizeof(SceneVertex)
-                         bytes:vertices usage:GL_STATIC_DRAW];
-    
-    // Setup texture0
-    CGImageRef imageRef0 =
-    [[UIImage imageNamed:@"test.jpg"] CGImage];
-    
-    GLKTextureInfo *textureInfo0  = [GLKTextureLoader
-                                    textureWithCGImage:imageRef0
-                                    options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSNumber numberWithBool:YES],
-                                    GLKTextureLoaderOriginBottomLeft, nil]
-                                    error:NULL];
-    
-    self.baseEffect.texture2d0.name = textureInfo0.name;
-    self.baseEffect.texture2d0.target = textureInfo0.target;
-    
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_S value:GL_REPEAT];
-    [self.baseEffect.texture2d0 aglkSetParameter:GL_TEXTURE_WRAP_T value:GL_REPEAT];
+                         numberOfVertices:_pointNum / sizeof(SceneVertex)
+                         bytes:_pointData usage:GL_STATIC_DRAW];
     
 }
-
 
 // GLKView
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
@@ -225,22 +167,6 @@ static void bm_free(potrace_bitmap_t *bm) {
                                   attribOffset:offsetof(SceneVertex, positionCoords)
                                   shouldEnable:YES];
     
-    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribNormal
-                           numberOfCoordinates:3
-                                  attribOffset:offsetof(SceneVertex, normalCoords)
-                                  shouldEnable:YES];
-    
-    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribTexCoord0
-                           numberOfCoordinates:2
-                                  attribOffset:offsetof(SceneVertex, textureCoords)
-                                  shouldEnable:YES];
-
-    
-    [self.vertexbuffer prepareToDrawWithAttrib:GLKVertexAttribTexCoord1
-                           numberOfCoordinates:2
-                                  attribOffset:offsetof(SceneVertex, textureCoords)
-                                  shouldEnable:YES];
-    
     // Render the object again with ES2
     glUseProgram(_program);
     
@@ -248,10 +174,9 @@ static void bm_free(potrace_bitmap_t *bm) {
     glUniformMatrix3fv(uniform[UNIFORM_NORMAL_MATRIX], 1, 0, _normatMatrix.m);
     glUniform1i(uniform[UNIFORM_TEXTURE0_SAMPLER2D], 0);
     glUniform1i(uniform[UNIFORM_TEXTURE1_SAMPLER2D], 1);
-    
     [self.vertexbuffer drawArrayWithMode:GL_LINE_STRIP
                         startVertexIndex:0
-                        numberOfVertices:sizeof(vertices)/sizeof(SceneVertex)];
+                        numberOfVertices:_pointNum/sizeof(SceneVertex)];
 }
 
 
@@ -277,12 +202,21 @@ static void bm_free(potrace_bitmap_t *bm) {
     [EAGLContext setCurrentContext:nil];
 }
 
+int ArrayString2Float(const char* str, float result[])
+{
+    int i = 0, n = 0, t;
+    while (str[n]) {
+        sscanf(str + n, "%f%n", &result[i++], &t);
+        n += t + 1;
+    }
+    return i;
+}
 
 #pragma mark - OpenGL ES 2 shader compilation
 - (BOOL)loadShaders
 {
     GLuint vertShader, fragShader;
-    NSString *vertShaderPathname, *fragShaderPathname;
+    NSString *vertShaderPathname, *fragShaderPathname, *pointPath;
     
     // Create a program
     _program = glCreateProgram();
@@ -299,7 +233,11 @@ static void bm_free(potrace_bitmap_t *bm) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
     }
-
+    
+    pointPath = [[NSBundle mainBundle] pathForResource:@"point" ofType:@"txt"];
+    const GLchar *pointSource;
+    pointSource = (GLchar *)[[NSString stringWithContentsOfFile:pointPath encoding:NSUTF8StringEncoding error:nil] UTF8String];
+    
     // Attach vertex shader to program
     glAttachShader(_program, vertShader);
     
@@ -309,9 +247,9 @@ static void bm_free(potrace_bitmap_t *bm) {
     // Bind attribute location
     // This needs to done prior to linking
     glBindAttribLocation(_program, GLKVertexAttribPosition, "aPosition");
-    glBindAttribLocation(_program, GLKVertexAttribNormal, "aNormal");
-    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "aTextureCoord0");
-    glBindAttribLocation(_program, GLKVertexAttribTexCoord1, "aTextureCoord1");
+//    glBindAttribLocation(_program, GLKVertexAttribNormal, "aNormal");
+//    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "aTextureCoord0");
+//    glBindAttribLocation(_program, GLKVertexAttribTexCoord1, "aTextureCoord1");
     
     // Link program
     if (![self linkProgram:_program]) {
