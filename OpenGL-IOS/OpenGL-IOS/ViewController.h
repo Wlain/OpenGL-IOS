@@ -5,6 +5,8 @@
 //  Created by william on 2019/10/25.
 //  Copyright © 2019 william. All rights reserved.
 //
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <GLKit/GLKit.h>
 #import "PotraceViewController.h"
 
@@ -15,16 +17,9 @@
 {
     GLuint _program;
     GLKMatrix4 _modelViewPorjectionMatrix;
-    GLKMatrix3 _normatMatrix;
-    GLfloat _rotation;
     
-    GLuint _vertexArray;
-    GLuint _vertexBuffer;
-    GLuint _texture0ID;
-    GLuint _texture1ID;
-
-    float *_pointData;
-    int    _pointNum;
+    float *_verticesData;
+    int    _verticesNum;
 }
 
 @property (strong, nonatomic) PotraceViewController *potrace;

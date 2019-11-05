@@ -11,29 +11,9 @@
 #import "AGLKContext.h"
 
 
-@interface GLKEffectPropertyTexture (AGLKAdditions)
-
-- (void)aglkSetParameter:(GLenum)parameterID
-                   value:(GLint)value;
-
-@end
-
-@implementation GLKEffectPropertyTexture (AGLKAdditions)
-
-- (void)aglkSetParameter:(GLenum)parameterID
-                   value:(GLint)value
-{
-    glBindTexture(self.target, self.name);
-    
-    glTexParameteri(self.target,
-                    parameterID,
-                    value);
-}
-
-@end
-
 @interface ViewController()
     
+#pragma mark - OpenGL ES 2 shader compilation
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader
                  type:(GLenum)type
@@ -52,49 +32,22 @@
 enum
 {
     UNIFORM_MODELVIEWPROJECTION_MATRIX,
-    UNIFORM_NORMAL_MATRIX,
-    UNIFORM_TEXTURE0_SAMPLER2D,
-    UNIFORM_TEXTURE1_SAMPLER2D,
     NUM_NUNIFORMS
 };
 
 // GLSL Program uniform IDs
 GLint uniform[NUM_NUNIFORMS];
 
-// vertex info
-typedef struct {
+typedef struct
+{
     GLKVector2 positionCoords;
 }
 SceneVertex;
 
-float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
-
 - (void)update
 {
-    float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
-    self.baseEffect.transform.projectionMatrix = projectionMatrix;
-    GLKMatrix4 matrix = GLKMatrix4MakeScale(1.0, 1.0, 1.0);
-    
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
-
-    // Computer the model view matrix for the object rendered with GLKit
-    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
-    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-
-    self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
-
-    //Computer the model view matrix for the object rendered with ES2
-    modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
-    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-    
-    _normatMatrix = GLKMatrix4GetMatrix3(GLKMatrix4InvertAndTranspose(modelViewMatrix, NULL));
-    
-    _modelViewPorjectionMatrix = matrix;//GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
-
-    _rotation = 3.14;
+    GLKMatrix4 matrix = GLKMatrix4Identity;
+    _modelViewPorjectionMatrix = matrix;
 }
 
 -(PotraceViewController *)potrace
@@ -107,19 +60,16 @@ float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
 
 
 - (void)viewDidLoad {
-    _pointData = (float *)malloc(sizeof(float) * 1024 * 1024);
-    memset(_pointData, 0, sizeof(float) * 1024 * 1024);
-    _pointNum = 0;
+    _verticesData = (float *)malloc(sizeof(float) * 1024 * 100);
+    memset(_verticesData, 0, sizeof(float) * 1024 * 100);
+    _verticesNum = 0;
     [super viewDidLoad];
-    _pointNum = [self.potrace runPotroce:_pointData];
-    if (_pointNum != 0)
+    _verticesNum = [self.potrace runPotroce:_verticesData];
+    if (_verticesNum != 0)
     {
         NSLog(@"Error to potrace");
     }
-    fprintf(stderr, "Error allocating bitmap: %s\n", strerror(errno));
-    self.view.backgroundColor = [UIColor redColor];
-    self.preferredFramesPerSecond = 60;
-      
+    
     // Verify the type of view created automatically by the
     // Interface Builder storyboard
     GLKView *view = (GLKView *)self.view;
@@ -133,7 +83,6 @@ float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
     [AGLKContext setCurrentContext:view.context];
     
     [self loadShaders];
-    
     
     // Create a base effect that provides standard OpenGL ES 2.0
     // shading language programs and set constants to be used for
@@ -151,9 +100,8 @@ float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
     // Create vertex buffer containing vertices to draw
     self.vertexbuffer = [[AGLKVertexAttribArrayBuffer alloc]
                          initWithAttribStride:sizeof(SceneVertex)
-                         numberOfVertices:_pointNum / sizeof(SceneVertex)
-                         bytes:_pointData usage:GL_STATIC_DRAW];
-    
+                         numberOfVertices:_verticesNum / 2
+                         bytes:_verticesData usage:GL_STATIC_DRAW];
 }
 
 // GLKView
@@ -169,14 +117,10 @@ float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
     
     // Render the object again with ES2
     glUseProgram(_program);
-    
     glUniformMatrix4fv(uniform[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewPorjectionMatrix.m);
-    glUniformMatrix3fv(uniform[UNIFORM_NORMAL_MATRIX], 1, 0, _normatMatrix.m);
-    glUniform1i(uniform[UNIFORM_TEXTURE0_SAMPLER2D], 0);
-    glUniform1i(uniform[UNIFORM_TEXTURE1_SAMPLER2D], 1);
     [self.vertexbuffer drawArrayWithMode:GL_LINE_STRIP
                         startVertexIndex:0
-                        numberOfVertices:_pointNum/sizeof(SceneVertex)];
+                        numberOfVertices:_verticesNum/2];
 }
 
 
@@ -200,17 +144,15 @@ float vertices[] = {-0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, 0.5f};
     // clean up
     ((GLKView *)self.view).context = nil;
     [EAGLContext setCurrentContext:nil];
+    // release memory
+    _potrace = nil;
+    if (_verticesData) {
+        free(_verticesData);
+        _verticesData = NULL;
+    }
 }
 
-int ArrayString2Float(const char* str, float result[])
-{
-    int i = 0, n = 0, t;
-    while (str[n]) {
-        sscanf(str + n, "%f%n", &result[i++], &t);
-        n += t + 1;
-    }
-    return i;
-}
+
 
 #pragma mark - OpenGL ES 2 shader compilation
 - (BOOL)loadShaders
@@ -272,9 +214,6 @@ int ArrayString2Float(const char* str, float result[])
     
     // Get uniform locations.
     uniform[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "uModelViewProjectionMatrix");
-    uniform[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "uNormalMatrix");
-    uniform[UNIFORM_TEXTURE0_SAMPLER2D] = glGetUniformLocation(_program, "uSampler0");
-    uniform[UNIFORM_TEXTURE1_SAMPLER2D] = glGetAttribLocation(_program, "uSampler1");
     
     // Release vertex and fragment shader
     if (vertShader) {

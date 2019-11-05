@@ -122,7 +122,8 @@ static void bm_free(potrace_bitmap_t *bm) {
     /* fill the bitmap with some pattern */
     for (y=0; y<height; y++) {
       for (x=0; x<width; x++) {
-        BM_PUT(bm, x, (height - y), (redDate[x + y * width] < 252) ? 1 : 0);
+        BM_PUT(bm, x, (height - y), (redDate[x + y * width] < 250) ? 1 : 0);
+//          BM_PUT(bm, x, (height - y), (x > 50 && x < 150 && y > 50 && y < 150) ? 1 : 0);
       }
     }
     free(redDate);
@@ -153,9 +154,10 @@ static void bm_free(potrace_bitmap_t *bm) {
       n = p->curve.n;
       tag = p->curve.tag;
       c = p->curve.c;
-      vertices[result++] = c[n-1][2].x/width * 2 - 1.0;
-      vertices[result++] = c[n-1][2].y/height  * 2 - 1.0 - 1.0;
-      printf("%f %f moveto\n", c[n-1][2].x/width * 2 - 1.0, c[n-1][2].y/height  * 2 - 1.0);
+//      vertices[result++] = c[n-1][2].x/width * 2 - 1.0;
+//      vertices[result++] = c[n-1][2].y/height  * 2 - 1.0;
+//      printf("%f %f moveto\n", c[n-1][2].x/width * 2 - 1.0, c[n-1][2].y/height  * 2 - 1.0);
+        printf("%f %f moveto\n", c[n-1][2].x, c[n-1][2].y);
       for (i=0; i<n; i++) {
         switch (tag[i]) {
         case POTRACE_CORNER:
@@ -163,8 +165,10 @@ static void bm_free(potrace_bitmap_t *bm) {
         vertices[result++] = c[i][1].y/height * 2 - 1.0;
         vertices[result++] = c[i][2].x/width * 2 - 1.0;
         vertices[result++] = c[i][2].y/height * 2 - 1.0;
-      printf("%f %f \n", c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0);
-      printf("%f %f \n", c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
+                printf("%f %f lineto\n", c[i][1].x, c[i][1].y);
+                printf("%f %f lineto\n", c[i][2].x, c[i][2].y);
+//      printf("%f %f \n", c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0);
+//      printf("%f %f \n", c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
       break;
         case POTRACE_CURVETO:
                 vertices[result++] = c[i][0].x/width * 2 - 1.0;
@@ -173,10 +177,14 @@ static void bm_free(potrace_bitmap_t *bm) {
                 vertices[result++] = c[i][1].y/height * 2 - 1.0;
                 vertices[result++] = c[i][2].x/width * 2 - 1.0;
                 vertices[result++] = c[i][2].y/height * 2 - 1.0;
-      printf("%f %f %f %f %f %f \n",
-             c[i][0].x/width * 2 - 1.0, c[i][0].y/height * 2 - 1.0,
-             c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0,
-             c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
+//      printf("%f %f %f %f %f %f \n",
+//             c[i][0].x/width * 2 - 1.0, c[i][0].y/height * 2 - 1.0,
+//             c[i][1].x/width * 2 - 1.0, c[i][1].y/height * 2 - 1.0,
+//             c[i][2].x/width * 2 - 1.0, c[i][2].y/height * 2 - 1.0);
+                printf("%f %f %f %f %f %f curveto\n",
+                c[i][0].x, c[i][0].y,
+                c[i][1].x, c[i][1].y,
+                c[i][2].x, c[i][2].y);
       break;
         }
       }
