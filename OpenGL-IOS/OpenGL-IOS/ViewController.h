@@ -7,20 +7,21 @@
 //
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#import <GLKit/GLKit.h>
 #import "PotraceViewController.h"
+#import "AGLCompileShader.h"
+#import <GLKit/GLKit.h>
 
 @class AGLKVertexAttribArrayBuffer;
 
-
 @interface ViewController : GLKViewController
 {
-    GLuint _program;
     GLKMatrix4 _modelViewPorjectionMatrix;
     
     float *_verticesData;
     int    _verticesNum;
 }
+
+@property (strong, nonatomic) AGLCompileShader *shader;
 
 @property (strong, nonatomic) PotraceViewController *potrace;
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D021DCA23640A1C003ACB87 /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D021DC923640A1C003ACB87 /* AGLKContext.m */; };
 		3D021DCD23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */; };
+		3D078AE0237144B500E0FEAD /* AGLCompileShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D078ADF237144B500E0FEAD /* AGLCompileShader.m */; };
 		3D0954E5236ACDFE00A9F19D /* mkbitmap.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954AE236ACDF900A9F19D /* mkbitmap.c */; };
 		3D0954E6236ACDFE00A9F19D /* backend_xfig.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954AF236ACDF900A9F19D /* backend_xfig.c */; };
 		3D0954E7236ACDFE00A9F19D /* trans.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D0954B0236ACDF900A9F19D /* trans.c */; };
@@ -63,6 +64,8 @@
 		3D021DC923640A1C003ACB87 /* AGLKContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKContext.m; sourceTree = "<group>"; };
 		3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
 		3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
+		3D078ADE237144B500E0FEAD /* AGLCompileShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLCompileShader.h; sourceTree = "<group>"; };
+		3D078ADF237144B500E0FEAD /* AGLCompileShader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLCompileShader.m; sourceTree = "<group>"; };
 		3D0954AE236ACDF900A9F19D /* mkbitmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mkbitmap.c; sourceTree = "<group>"; };
 		3D0954AF236ACDF900A9F19D /* backend_xfig.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = backend_xfig.c; sourceTree = "<group>"; };
 		3D0954B0236ACDF900A9F19D /* trans.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trans.c; sourceTree = "<group>"; };
@@ -161,6 +164,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D078ADD2371445900E0FEAD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				3D021DC823640A1C003ACB87 /* AGLKContext.h */,
+				3D021DC923640A1C003ACB87 /* AGLKContext.m */,
+				3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */,
+				3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */,
+				3D078ADE237144B500E0FEAD /* AGLCompileShader.h */,
+				3D078ADF237144B500E0FEAD /* AGLCompileShader.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		3D0954AD236ACDC800A9F19D /* potrace */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,15 +273,12 @@
 		3D09F28D23631C5D00D5540E /* OpenGL-IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3D078ADD2371445900E0FEAD /* Common */,
 				3D52A3832365E597008D0F69 /* Resource */,
 				3DFF8F1223694DC60083DAA5 /* Shaders */,
 				3D0954AD236ACDC800A9F19D /* potrace */,
 				3D0954FF236B050600A9F19D /* PotraceViewController.h */,
 				3D095500236B050600A9F19D /* PotraceViewController.mm */,
-				3D021DC823640A1C003ACB87 /* AGLKContext.h */,
-				3D021DC923640A1C003ACB87 /* AGLKContext.m */,
-				3D021DCB23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.h */,
-				3D021DCC23640BE4003ACB87 /* AGLKVertexAttribArrayBuffer.m */,
 				3D09F28E23631C5D00D5540E /* AppDelegate.h */,
 				3D09F28F23631C5D00D5540E /* AppDelegate.m */,
 				3D09F29123631C5D00D5540E /* ViewController.h */,
@@ -397,6 +410,7 @@
 				3D021DCA23640A1C003ACB87 /* AGLKContext.m in Sources */,
 				3D0954FC236ACDFE00A9F19D /* backend_svg.c in Sources */,
 				3D09F29323631C5D00D5540E /* ViewController.m in Sources */,
+				3D078AE0237144B500E0FEAD /* AGLCompileShader.m in Sources */,
 				3D0954E7236ACDFE00A9F19D /* trans.c in Sources */,
 				3D0954F9236ACDFE00A9F19D /* trace.c in Sources */,
 				3D0954EC236ACDFE00A9F19D /* lzw.c in Sources */,
